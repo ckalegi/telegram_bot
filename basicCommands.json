@@ -135,5 +135,9 @@
   {
 	  "commands": ["milk", "milked"],
 	  "response": "https://www.instagram.com/p/BW0r8wrlSMJ/"
+  },
+  {
+    "commands":["rule", "rules", "guideline", "guidelines", "law", "laws"],
+    "response": "For more information on the rules, visit: http://bit.ly/CHIesk8Rules\n\n1. Wear a helmet.\n2. Seriously, wear a helmet.\n3. Keep a safe following distance.\n4. Stagger yourselves while riding.\n5. Wear clothing that wont fly off or get caught in wheels.\n6. Don't blind people with your flashlight.\n7. Watch where you shine your flashlight.\n8. Ride responsibly.\n9. Be a team player.\n10. Communicate.\n11. Come prepared.\n12. Obey traffic signals.\n13. Excersise caution.\n14. Ride Defensively.\n15. Avoide Road Rage.\n16. Keep some form of emergency contact info on your person.\n17. Do not ride drunk."
   }
 ]
