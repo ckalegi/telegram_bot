@@ -150,7 +150,8 @@ bot.on("new_chat_members", ctx => {
     "For a map on places to charge, check out: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing\n" +
     "For info on the next group ride, click: /group_ride\n" +
     "For even more info, check out: https://www.facebook.com/groups/chicagoeskate/events/\n" +
-    "If you want to know more about what I can do, click /help\n";
+    "If you want to know more about what I can do, click /help\n" +
+    "Also, make sure you look at the Group Ride Guidelines by clicking: /rules";
 
   ctx.reply(resp);
 });
