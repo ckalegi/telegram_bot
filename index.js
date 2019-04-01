@@ -90,8 +90,8 @@ async function runSample(projectId = 'your-project-id', message) {
   }
 
   let arr = []
-  arr.push(result.intent.displayName)
-  arr.push(result.fulfillmentText)
+  arr.push(result.intent.displayName.toString())
+  arr.push(result.fulfillmentText.toString())
 
   return arr;
   
