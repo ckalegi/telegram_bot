@@ -74,6 +74,8 @@ async function runSample(projectId = 'your-project-id', message) {
     },
   };
 
+  request.queryInput.text.text = message
+
 
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
