@@ -41,45 +41,6 @@ const errorMsg =
   "There was an error. Try again later. \n@jacob_waller Look at logs pls";
 
 
-/**
- * Send a query to the dialogflow agent, and return the query result.
- * @param {string} projectId The project to be used
- */
-async function runSample(projectId = projectInformation.project_id) {
-  // A unique identifier for the given session
-  const sessionId = uuid.v4();
- 
-  // Create a new session
-  const sessionClient = new dialogflow.SessionsClient();
-  const sessionPath = sessionClient.sessionPath(projectId, sessionId);
- 
-  // The text query request.
-  const request = {
-    session: sessionPath,
-    queryInput: {
-      text: {
-        // The query to send to the dialogflow agent
-        text: 'hello',
-        // The language used by the client (en-US)
-        languageCode: 'en-US',
-      },
-    },
-  };
- 
-  // Send request and log result
-  const responses = await sessionClient.detectIntent(request);
-  console.log('Detected intent');
-  const result = responses[0].queryResult;
-  console.log(`  Query: ${result.queryText}`);
-  console.log(`  Response: ${result.fulfillmentText}`);
-  if (result.intent) {
-    console.log(`  Intent: ${result.intent.displayName}`);
-  } else {
-    console.log(`  No intent matched.`);
-  }
-}
-
-
 //Generic Command Section. Commands defined in basicCommands.json
 for (var i = 0; i < basicCommands.length; i++) {
   bot.command(
@@ -90,7 +51,67 @@ for (var i = 0; i < basicCommands.length; i++) {
 
 
 bot.command("ask", ctx => {
-  runSample();
+      // Instantiates a session client
+    const sessionClient = new dialogflow.SessionsClient();
+
+    if (!queries || !queries.length) {
+      return;
+    }
+
+    // The path to identify the agent that owns the created intent.
+    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+
+    let promise;
+
+    // Detects the intent of the queries.
+    for (const query of queries) {
+      // The text query request.
+      const request = {
+        session: sessionPath,
+        queryInput: {
+          text: {
+            text: query,
+            languageCode: languageCode,
+          },
+        },
+      };
+
+      if (!promise) {
+        // First query.
+        console.log(`Sending query "${query}"`);
+        promise = sessionClient.detectIntent(request);
+      } else {
+        promise = promise.then(responses => {
+          console.log('Detected intent');
+          const response = responses[0];
+          logQueryResult(sessionClient, response.queryResult);
+
+          // Use output contexts as input contexts for the next query.
+          response.queryResult.outputContexts.forEach(context => {
+            // There is a bug in gRPC that the returned google.protobuf.Struct
+            // value contains fields with value of null, which causes error
+            // when encoding it back. Converting to JSON and back to proto
+            // removes those values.
+            context.parameters = struct.encode(struct.decode(context.parameters));
+          });
+          request.queryParams = {
+            contexts: response.queryResult.outputContexts,
+          };
+
+          console.log(`Sending query "${query}"`);
+          return sessionClient.detectIntent(request);
+        });
+      }
+    }
+
+    promise
+      .then(responses => {
+        console.log('Detected intent');
+        logQueryResult(sessionClient, responses[0].queryResult);
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
 });
 
 //Says
