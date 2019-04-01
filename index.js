@@ -18,6 +18,7 @@ var jsdom = require("jsdom");
 var mysql = require("mysql");
 var schedule = require("node-schedule");
 var basicCommands = require("./basicCommands.json");
+var projectInformation = require("./projectID.json")
 
 const { Markup } = require("telegraf");
 
@@ -44,7 +45,7 @@ const errorMsg =
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
  */
-async function runSample(projectId = PROJECT_ID) {
+async function runSample(projectId = projectInformation.project_id) {
   // A unique identifier for the given session
   const sessionId = uuid.v4();
  
