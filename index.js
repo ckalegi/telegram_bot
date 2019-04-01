@@ -90,14 +90,14 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
     console.log(`  No intent matched.`);
   }
 
-  var arr = []
-  arr.push(result.intent.displayName.toString())
-  arr.push(result.fulfillmentText.toString())
+  if(result.fulfillmentText){
+    ctx.reply(result.fulfillmentText)
+  } else {
 
-  ctx.reply(result.intent.displayName)
+    
 
-  return arr;
-  
+
+  }
 }
 
 bot.command("ask", ctx => {
