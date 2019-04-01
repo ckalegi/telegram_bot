@@ -53,7 +53,7 @@ for (var i = 0; i < basicCommands.length; i++) {
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
  */
-async function runSample(projectId = 'your-project-id', message) {
+async function runSample(projectId = 'your-project-id', message, ctx) {
   // A unique identifier for the given session
   const sessionId = uuid.v4();
 
@@ -93,6 +93,8 @@ async function runSample(projectId = 'your-project-id', message) {
   var arr = []
   arr.push(result.intent.displayName.toString())
   arr.push(result.fulfillmentText.toString())
+
+  ctx.reply(result.intent.displayName)
 
   return arr;
   
