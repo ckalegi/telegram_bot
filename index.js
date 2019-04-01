@@ -11,6 +11,9 @@ const request = require("request");
 const cheerio = require("cheerio");
 const rp = require("request-promise");
 const fs = require("fs");
+const dialogflow = require("dialogflow")
+const uuid = require("uuid")
+
 var jsdom = require("jsdom");
 var mysql = require("mysql");
 var schedule = require("node-schedule");
@@ -25,6 +28,7 @@ let DARKSKY_TOKEN = process.env.DARKSKY_TOKEN;
 let OPENWEATHER_TOKEN = process.env.OPENWEATHER_TOKEN;
 let GROUP_ID = process.env.GROUP_ID;
 let SECRET_COMMAND = process.env.SECRET_COMMAND;
+let PROJECT_ID = process.env.PROJECT_ID
 
 //Credentials for the SQL server
 let sql_creds = require("./sql_creds.json");
@@ -35,6 +39,46 @@ const bot = new Telegraf(BOT_TOKEN, { username: "ChiSk8_bot" });
 const errorMsg =
   "There was an error. Try again later. \n@jacob_waller Look at logs pls";
 
+
+/**
+ * Send a query to the dialogflow agent, and return the query result.
+ * @param {string} projectId The project to be used
+ */
+async function runSample(projectId = PROJECT_ID) {
+  // A unique identifier for the given session
+  const sessionId = uuid.v4();
+ 
+  // Create a new session
+  const sessionClient = new dialogflow.SessionsClient();
+  const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+ 
+  // The text query request.
+  const request = {
+    session: sessionPath,
+    queryInput: {
+      text: {
+        // The query to send to the dialogflow agent
+        text: 'hello',
+        // The language used by the client (en-US)
+        languageCode: 'en-US',
+      },
+    },
+  };
+ 
+  // Send request and log result
+  const responses = await sessionClient.detectIntent(request);
+  console.log('Detected intent');
+  const result = responses[0].queryResult;
+  console.log(`  Query: ${result.queryText}`);
+  console.log(`  Response: ${result.fulfillmentText}`);
+  if (result.intent) {
+    console.log(`  Intent: ${result.intent.displayName}`);
+  } else {
+    console.log(`  No intent matched.`);
+  }
+}
+
+
 //Generic Command Section. Commands defined in basicCommands.json
 for (var i = 0; i < basicCommands.length; i++) {
   bot.command(
@@ -42,6 +86,11 @@ for (var i = 0; i < basicCommands.length; i++) {
     Telegraf.reply(basicCommands[i].response)
   );
 }
+
+
+bot.command("ask", ctx => {
+  runSample();
+});
 
 //Says
 //Good morning
