@@ -49,13 +49,11 @@ for (var i = 0; i < basicCommands.length; i++) {
   );
 }
 
-
-bot.command("ask", ctx => {
-  /**
+/**
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
  */
-async function runSample(projectId = PROJECT_ID) {
+async function runSample(projectId = 'your-project-id') {
   // A unique identifier for the given session
   const sessionId = uuid.v4();
 
@@ -88,6 +86,9 @@ async function runSample(projectId = PROJECT_ID) {
     console.log(`  No intent matched.`);
   }
 }
+
+bot.command("ask", ctx => {
+  runSample(projectId=PROJECT_ID);
 });
 
 //Says
