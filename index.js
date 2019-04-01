@@ -53,7 +53,7 @@ for (var i = 0; i < basicCommands.length; i++) {
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
  */
-async function runSample(projectId = 'your-project-id') {
+async function runSample(projectId = 'your-project-id', message) {
   // A unique identifier for the given session
   const sessionId = uuid.v4();
 
@@ -74,6 +74,7 @@ async function runSample(projectId = 'your-project-id') {
     },
   };
 
+
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
   console.log('Detected intent');
@@ -85,10 +86,17 @@ async function runSample(projectId = 'your-project-id') {
   } else {
     console.log(`  No intent matched.`);
   }
+
+
+  return result.intent.displayName;
+  
 }
 
 bot.command("ask", ctx => {
-  runSample(projectId=PROJECT_ID);
+  let intent = runSample(projectId=PROJECT_ID, ctx.message.text.toString().substring(5));
+
+  
+  ctx.reply(intent)
 });
 
 //Says
