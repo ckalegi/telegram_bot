@@ -101,8 +101,9 @@ async function runSample(projectId = 'your-project-id', message) {
 bot.command("ask", ctx => {
   let arr = runSample(projectId=PROJECT_ID, ctx.message.text.toString().substring(5));
 
+  console.log(arr);
   
-  ctx.reply(arr)
+  ctx.reply(arr);
 });
 
 //Says
