@@ -81,6 +81,7 @@ async function runSample(projectId = 'your-project-id', message) {
   const responses = await sessionClient.detectIntent(request);
   console.log('Detected intent');
   const result = responses[0].queryResult;
+
   console.log(`  Query: ${result.queryText}`);
   console.log(`  Response: ${result.fulfillmentText}`);
   if (result.intent) {
@@ -89,7 +90,7 @@ async function runSample(projectId = 'your-project-id', message) {
     console.log(`  No intent matched.`);
   }
 
-  let arr = []
+  var arr = []
   arr.push(result.intent.displayName.toString())
   arr.push(result.fulfillmentText.toString())
 
