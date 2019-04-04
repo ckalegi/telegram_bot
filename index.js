@@ -230,17 +230,15 @@ bot.start(ctx => {
 bot.help(ctx =>
   ctx.reply(
     "Hi! I'm here to answer some questions. If you want to add a feature, DM @jacob_waller. Also, be advised I am in the Pre-est of Alphas. Things may not work correctly\n\n" +
-      "/weather: Get current weather conditions\n" +
-      "/forecast: Get the forecast of the next few days\n" +
       "/helmets: Get a list of links to some pretty good helmets\n" +
       "/links: Get a list of helpful links for newcomers or those who are curious\n" +
       "/group_ride: Gives information on the next group ride\n" +
       "/charge: Gives the charging map for Chicago\n" +
       "/nosedive: idk some OneWheel meme\n" +
       "/sendit: inspiration\n" +
-      "/fail: when things go really...wrong\n" +
       "/bearings: shows a gif on how to remove bearings from a wheel\n" +
-      "/battery: shows a video on how to replace the battery on a Boosted Board\n\n" +
+      "/battery: shows a video on how to replace the battery on a Boosted Board\n" +
+      "/ask <a question>: ask me a question!\n\n" +
       "Version: 1.0"
   )
 );
