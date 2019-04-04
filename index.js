@@ -93,6 +93,8 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
   console.log('Detected intent');
   const result = responses[0].queryResult;
 
+  console.log(result)
+
   console.log(`  Query: ${result.queryText}`);
   console.log(`  Response: ${result.fulfillmentText}`);
   if (result.intent) {
