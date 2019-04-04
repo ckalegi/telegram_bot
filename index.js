@@ -49,6 +49,17 @@ for (var i = 0; i < basicCommands.length; i++) {
   );
 }
 
+function repl(word, ctx) {
+  for(var i = 0; i < basicCommands.length; i++) {
+    if(basicCommands[i].commands.includes(word)) {
+      ctx.reply(basicCommands[i].response)
+      return;
+    }
+  }
+
+  ctx.reply("I couldn't find any recommendations about " + word)
+}
+
 /**
  * Send a query to the dialogflow agent, and return the query result.
  * @param {string} projectId The project to be used
@@ -93,33 +104,43 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
   if(result.fulfillmentText){
     ctx.reply(result.fulfillmentText)
   } else {
-    if(result.intent.displayName == 'GroupRideIntent') {
-      var con = mysql.createConnection(sql_creds);
-  con.connect(function(err) {
-    if (err) throw err;
-    con.query(
-      'SELECT start, end, CONVERT(start_date, Date) AS start_date, TIME_FORMAT(start_time,"%h:%i %p") AS start_time, title FROM Events WHERE Events.start_date >= CURDATE() ORDER BY ABS(DATEDIFF(start_date, NOW())) LIMIT 1;',
-      function(err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-        var resp =
-          "The next event is titled " +
-          result[0].title +
-          ". It starts at " +
-          result[0].start +
-          " on " +
-          result[0].start_date.toString().substring(0, 15) +
-          " at " +
-          result[0].start_time +
-          ". It goes to " +
-          result[0].end;
-        ctx.reply(
-          resp +
-            ". For more info, go to: https://www.facebook.com/groups/chicagoeskate/events/ for a current list of events"
-        );
+    if(result.intent.displayName == 'RecommendationsIntent') {
+
+      let object = result.parameters.ObjectsEntity
+
+      if(object == '') {
+        ctx.reply("I'm not sure what you want recommendations for. Try again and be specific")
+      } else {
+        repl(object, ctx)
       }
-    );
-  });
+    }
+    else if(result.intent.displayName == 'GroupRideIntent') {
+      var con = mysql.createConnection(sql_creds);
+      con.connect(function(err) {
+        if (err) throw err;
+        con.query(
+          'SELECT start, end, CONVERT(start_date, Date) AS start_date, TIME_FORMAT(start_time,"%h:%i %p") AS start_time, title FROM Events WHERE Events.start_date >= CURDATE() ORDER BY ABS(DATEDIFF(start_date, NOW())) LIMIT 1;',
+          function(err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+            var resp =
+              "The next event is titled " +
+              result[0].title +
+              ". It starts at " +
+              result[0].start +
+              " on " +
+              result[0].start_date.toString().substring(0, 15) +
+              " at " +
+              result[0].start_time +
+              ". It goes to " +
+              result[0].end;
+            ctx.reply(
+              resp +
+                ". For more info, go to: https://www.facebook.com/groups/chicagoeskate/events/ for a current list of events"
+            );
+          }
+        );
+      });
     }
   }
 }
