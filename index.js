@@ -109,7 +109,7 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
     if(result.intent.displayName == 'RecommendationsIntent') {
 
       let object = result.parameters.fields.ObjectsEntity
-
+      console.log(object)
       if(object == '') {
         ctx.reply("I'm not sure what you want recommendations for. Try again and be specific")
       } else {
