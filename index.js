@@ -238,11 +238,10 @@ bot.help(ctx =>
       "/charge: Gives the charging map for Chicago\n" +
       "/nosedive: idk some OneWheel meme\n" +
       "/sendit: inspiration\n" +
-      "/runitout: how to fall properly\n" +
       "/fail: when things go really...wrong\n" +
       "/bearings: shows a gif on how to remove bearings from a wheel\n" +
       "/battery: shows a video on how to replace the battery on a Boosted Board\n\n" +
-      "Version: 0.8"
+      "Version: 1.0"
   )
 );
 
