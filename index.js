@@ -14,6 +14,9 @@ const fs = require("fs");
 const dialogflow = require("dialogflow")
 const uuid = require("uuid")
 
+const readline = require('readline');
+const {google} = require('googleapis');
+
 var jsdom = require("jsdom");
 var mysql = require("mysql");
 var schedule = require("node-schedule");
@@ -34,7 +37,13 @@ let PROJECT_ID = process.env.PROJECT_ID
 //Credentials for the SQL server
 let sql_creds = require("./sql_creds.json");
 
+//Google Sheet API
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const TOKEN_PATH = 'token.json';
+
 const bot = new Telegraf(BOT_TOKEN, { username: "ChiSk8_bot" });
+
+var mainCTX;
 
 //Generic Error message
 const errorMsg =
@@ -47,6 +56,106 @@ for (var i = 0; i < basicCommands.length; i++) {
     basicCommands[i].commands,
     Telegraf.reply(basicCommands[i].response)
   );
+}
+
+/**
+ * Create an OAuth2 client with the given credentials, and then execute the
+ * given callback function.
+ * @param {Object} credentials The authorization client credentials.
+ * @param {function} callback The callback to call with the authorized client.
+ */
+function authorize(credentials, callback) {
+  const {client_secret, client_id, redirect_uris} = credentials.installed;
+  const oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret, redirect_uris[0]);
+
+  // Check if we have previously stored a token.
+  fs.readFile(TOKEN_PATH, (err, token) => {
+    if (err) return getNewToken(oAuth2Client, callback);
+    oAuth2Client.setCredentials(JSON.parse(token));
+    callback(oAuth2Client);
+  });
+}
+
+/**
+ * Get and store new token after prompting for user authorization, and then
+ * execute the given callback with the authorized OAuth2 client.
+ * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+ * @param {getEventsCallback} callback The callback for the authorized client.
+ */
+function getNewToken(oAuth2Client, callback) {
+  mainCTX.reply("Verification Token Expired. @jacob-waller pls fix this")
+
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES,
+  });
+  console.log('Authorize this app by visiting this url:', authUrl);
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  rl.question('Enter the code from that page here: ', (code) => {
+    rl.close();
+    oAuth2Client.getToken(code, (err, token) => {
+      if (err) return console.error('Error while trying to retrieve access token', err);
+      oAuth2Client.setCredentials(token);
+      // Store the token to disk for later program executions
+      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+        if (err) return console.error(err);
+        console.log('Token stored to', TOKEN_PATH);
+      });
+      callback(oAuth2Client);
+    });
+  });
+}
+
+function sayNextGroupRide(auth) {
+  const sheets = google.sheets({version: 'v4', auth});
+  sheets.spreadsheets.values.get({
+    spreadsheetId: '1LCfjmKDpbmrU3rtASEdicNlW0ruCYLuuYmBgW5kWBcg',
+    range: 'Ride!A1:L',
+  }, (err, res) => {
+    if (err) return console.log('The API returned an error: ' + err);
+    const rows = res.data.values;
+
+    let rowsAfterToday = [];
+    //console.log(rows)
+    // 9 is date
+
+    if (rows.length) {
+      for(let i = 0; i < rows.length; i++) { 
+        if(rows[i][9] >= rows[2][10]) {
+            rowsAfterToday.push(rows[i])
+        }
+      }
+
+      //console.log(rowsAfterToday);
+
+      if(rowsAfterToday.length > 0) {
+          let minRowIndex = 0;
+          for(let i = 1; i < rowsAfterToday.length; i++) {
+              if(rowsAfterToday[i][9] < rowsAfterToday[minRowIndex][9]) {
+                  minRowIndex = i;
+              }
+          }
+
+          fr = rowsAfterToday[minRowIndex];
+          output = "The next group ride is scheduled for " + fr[0] + ", " + fr[1] +".\n"+
+                   "It will start at " + fr[4] + " and will end at " + fr[7] + ".\n" + 
+                   "For more information on this group ride, visit: " + fr[6];
+
+          mainCTX.reply(output);
+
+      } else {
+          mainCTX.reply("There are no group rides scheduled.");
+      }
+
+
+    } else {
+      mainCTX.reply('No Group Rides Scheduled');
+    }
+  });
 }
 
 function repl(word, ctx) {
@@ -87,7 +196,6 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
 
   request.queryInput.text.text = message
 
-
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
   console.log('Detected intent');
@@ -117,32 +225,13 @@ async function runSample(projectId = 'your-project-id', message, ctx) {
       }
     }
     else if(result.intent.displayName == 'GroupRideIntent') {
-      var con = mysql.createConnection(sql_creds);
-      con.connect(function(err) {
-        if (err) throw err;
-        con.query(
-          'SELECT start, end, CONVERT(start_date, Date) AS start_date, TIME_FORMAT(start_time,"%h:%i %p") AS start_time, title FROM Events WHERE Events.start_date >= CURDATE() ORDER BY ABS(DATEDIFF(start_date, NOW())) LIMIT 1;',
-          function(err, result, fields) {
-            if (err) throw err;
-            console.log(result);
-            var resp =
-              "The next event is titled " +
-              result[0].title +
-              ". It starts at " +
-              result[0].start +
-              " on " +
-              result[0].start_date.toString().substring(0, 15) +
-              " at " +
-              result[0].start_time +
-              ". It goes to " +
-              result[0].end;
-            ctx.reply(
-              resp +
-                ". For more info, go to: https://www.facebook.com/groups/chicagoeskate/events/ for a current list of events"
-            );
-          }
-        );
-      });
+      mainCTX = ctx;
+      // Load client secrets from a local file.
+      fs.readFile('credentials.json', (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+          // Authorize a client with credentials, then call the Google Sheets API.
+          authorize(JSON.parse(content), sayNextGroupRide);
+      });  
     }
   }
 }
@@ -185,36 +274,13 @@ function dailyMessage() {
     }
   );
 
-  //determine if there is a group ride today or tomorrow.
-  var con = mysql.createConnection(sql_creds);
-  con.connect(function(err) {
-    if (err) throw err;
-    con.query(
-      'SELECT start, end, CONVERT(start_date, Date) AS start_date, TIME_FORMAT(start_time,"%h:%i %p") AS start_time, title FROM Events WHERE Events.start_date = CURDATE() OR Events.start_date-1=CURDATE() ORDER BY ABS(DATEDIFF(start_date, NOW())) LIMIT 1;',
-      function(err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-        try {
-          resp =
-            "There is a group ride on " +
-            result[0].start_date.toString().substring(0, 15) +
-            " titled: " +
-            result[0].title +
-            ". It is at at " +
-            result[0].start_time +
-            ".\n";
-          resp +=
-            "It starts at " + result[0].start + " and ends at " + result[0].end;
-          bot.telegram.sendMessage(GROUP_ID, resp);
-        } catch (error) {
-          bot.telegram.sendMessage(
-            GROUP_ID,
-            "There are no group rides today or tomorrow"
-          );
-        }
-      }
-    );
-  });
+  mainCTX = ctx;
+  // Load client secrets from a local file.
+  fs.readFile('credentials.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+      // Authorize a client with credentials, then call the Google Sheets API.
+      authorize(JSON.parse(content), sayNextGroupRide);
+  });  
 }
 
 var s = schedule.scheduleJob("0 11 * * *", () => {
