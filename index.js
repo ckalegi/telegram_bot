@@ -141,7 +141,7 @@ function sayNextGroupRide(auth) {
           }
 
           fr = rowsAfterToday[minRowIndex];
-          output = "The next group ride is scheduled for " + fr[0] + ", " + fr[1] +".\n"+
+          output = "The next group ride is scheduled for " + fr[0] + ", " + fr[1] + " at " + fr[2] + ".\n"+
                    "It will start at " + fr[4] + " and will end at " + fr[7] + ".\n" + 
                    "For more information on this group ride, visit: " + fr[6];
 
