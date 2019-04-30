@@ -90,7 +90,7 @@
   },
   {
     "commands": ["helmet", "helmets", "helmet_recommendations", "brain_bucket"],
-    "response": "http://www.bernunlimited.com/\nhttps://www.explorethousand.com/\nhttps://www.ruroc.com/en/\nhttps://shop.boostedboards.com/products/boosted-helmet\nhttps://www.pocsports.com/us/cycling-helmets/commuter/"
+    "response": "http://www.bernunlimited.com/\nhttps://www.explorethousand.com/\nhttps://www.ruroc.com/en/\nhttps://shop.boostedboards.com/products/boosted-helmet\nhttps://www.pocsports.com/us/cycling-helmets/commuter/\nhttps://www.youtube.com/watch?v=b9yL5usLFgY"
   },
   {
     "commands": ["belts", "belt"],
@@ -98,7 +98,7 @@
   },
   {
     "commands": ["nosedive"],
-    "response": "ayy lmao\nhttps://www.youtube.com/watch?v=kc6IEVV9mp0&t=20s"
+    "response": "ayy lmao\nhttps://www.youtube.com/watch?v=kc6IEVV9mp0"
   },
   {
 	  "commands": ["milk", "milked"],
