@@ -119,14 +119,16 @@ function sayNextGroupRide(auth) {
     if (err) return console.log('The API returned an error: ' + err);
     const rows = res.data.values;
 
+    console.log(rows);
+
     let rowsAfterToday = [];
     //console.log(rows)
     // 9 is date
 
-    if (rows.length) {
+    if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
         if(rows[i][9] >= rows[2][10]) {
-            rowsAfterToday.push(rows[i])
+          rowsAfterToday.push(rows[i])
         }
       }
 
