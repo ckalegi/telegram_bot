@@ -272,7 +272,7 @@ function dailyMessage() {
   });  
 }
 
-var s = schedule.scheduleJob("22 17 * * *", () => {
+var s = schedule.scheduleJob("0 13 * * *", () => {
   console.log("Tada");
   dailyMessage();
 });
