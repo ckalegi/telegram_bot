@@ -260,8 +260,7 @@ bot.command("daily", ctx=> {
 //Says
 //Whether or not a group ride is today or tomorrow
 function dailyMessage() {
-  var resp = "Good morning!\n";
-  bot.telegram.sendMessage(GROUP_ID, resp);
+  mainCTX.reply("Good morning!\n")
 
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
