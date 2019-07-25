@@ -158,7 +158,7 @@ function sayNextGroupRide(auth) {
                    "For more information on this group ride, visit: " + fr[6];
 
           bot.telegram.sendMessage(GROUP_ID, output)
-          mainCTX.reply(output);
+          //mainCTX.reply(output);
 
       } else {
         bot.telegram.sendMessage(GROUP_ID, "No group rides available")
