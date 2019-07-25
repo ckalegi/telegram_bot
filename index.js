@@ -124,12 +124,14 @@ function sayNextGroupRide(auth) {
     // 9 is date
 
     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-    var firstDate = new Date(1899,12,31);
+    var firstDate = new Date(2019,1,1);
     var secondDate = new Date();
+
+    let daysSinceJan1 = 43465
 
     var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
 
-    console.log(diffDays)
+    console.log(diffDays + daysSinceJan1)
 
     if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
