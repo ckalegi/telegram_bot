@@ -157,15 +157,16 @@ function sayNextGroupRide(auth) {
                    "It will start at " + fr[4] + " and will end at " + fr[7] + ".\n" + 
                    "For more information on this group ride, visit: " + fr[6];
 
+          bot.telegram.sendMessage(GROUP_ID, output)
           mainCTX.reply(output);
 
       } else {
-          mainCTX.reply("There are no group rides scheduled.");
+        bot.telegram.sendMessage(GROUP_ID, "No group rides available")
       }
 
 
     } else {
-      mainCTX.reply('No Group Rides Scheduled');
+      bot.telegram.sendMessage(GROUP_ID, "No group rides available")
     }
   });
 }
@@ -260,7 +261,8 @@ bot.command("daily", ctx=> {
 //Says
 //Whether or not a group ride is today or tomorrow
 function dailyMessage() {
-  mainCTX.reply("Good morning!\n")
+  bot.telegram.sendMessage(GROUP_ID, "Good Morning!");
+  console.log(bot.telegram);
 
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
@@ -270,7 +272,7 @@ function dailyMessage() {
   });  
 }
 
-var s = schedule.scheduleJob("25 16 * * *", () => {
+var s = schedule.scheduleJob("22 17 * * *", () => {
   console.log("Tada");
   dailyMessage();
 });
