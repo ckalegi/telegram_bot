@@ -123,9 +123,15 @@ function sayNextGroupRide(auth) {
     console.log(rows)
     // 9 is date
 
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var firstDate = new Date(1899,12,31);
+    var secondDate = new Date();
+
+    var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+
     if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
-        if(rows[i][9] >= rows[2][10]) {
+        if(rows[i][9] >= diffDays) {
           rowsAfterToday.push(rows[i])
         }
       }
