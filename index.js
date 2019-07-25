@@ -124,7 +124,7 @@ function sayNextGroupRide(auth) {
     // 9 is date
 
     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-    var firstDate = new Date(2019,1,1);
+    var firstDate = new Date(2019,0,1);
     var secondDate = new Date();
 
     let daysSinceJan1 = 43465
