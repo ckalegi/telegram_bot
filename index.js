@@ -134,6 +134,7 @@ function sayNextGroupRide(auth) {
     console.log(firstDate)
     console.log(secondDate)
     console.log(diffDays)
+    console.log(daysSinceJan1 + diffDays);
 
     if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
