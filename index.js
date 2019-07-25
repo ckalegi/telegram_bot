@@ -253,6 +253,7 @@ bot.command("ask", ctx => {
 });
 
 bot.command("daily", ctx=> {
+  mainCTX = ctx
   dailyMessage();
 })
 
@@ -262,7 +263,6 @@ function dailyMessage() {
   var resp = "Good morning!\n";
   bot.telegram.sendMessage(GROUP_ID, resp);
 
-  mainCTX = ctx;
   // Load client secrets from a local file.
   fs.readFile('credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
