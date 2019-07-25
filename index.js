@@ -131,7 +131,7 @@ function sayNextGroupRide(auth) {
 
     var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
 
-    console.log(diffDays + daysSinceJan1)
+    console.log(diffDays)
 
     if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
