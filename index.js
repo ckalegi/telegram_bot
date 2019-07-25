@@ -138,7 +138,7 @@ function sayNextGroupRide(auth) {
 
     if (rows.length > 0) {
       for(let i = 0; i < rows.length; i++) { 
-        if(rows[i][9] >= diffDays) {
+        if(rows[i][9] >= diffDays + daysSinceJan1) {
           rowsAfterToday.push(rows[i])
         }
       }
