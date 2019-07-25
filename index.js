@@ -119,10 +119,8 @@ function sayNextGroupRide(auth) {
     if (err) return console.log('The API returned an error: ' + err);
     const rows = res.data.values;
 
-    console.log(rows);
-
     let rowsAfterToday = [];
-    //console.log(rows)
+    console.log(rows)
     // 9 is date
 
     if (rows.length > 0) {
@@ -132,7 +130,7 @@ function sayNextGroupRide(auth) {
         }
       }
 
-      //console.log(rowsAfterToday);
+      console.log(rowsAfterToday);
 
       if(rowsAfterToday.length > 0) {
           let minRowIndex = 0;
