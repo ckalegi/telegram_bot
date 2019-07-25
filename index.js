@@ -252,39 +252,15 @@ bot.command("ask", ctx => {
   runSample(projectId=PROJECT_ID, ctx.message.text.toString().substring(5), ctx);
 });
 
+bot.command("daily", ctx=> {
+  dailyMessage();
+})
+
 //Says
-//Good morning
-//Weather
 //Whether or not a group ride is today or tomorrow
 function dailyMessage() {
   var resp = "Good morning!\n";
   bot.telegram.sendMessage(GROUP_ID, resp);
-
-  //Get weather for the day
-  request(
-    `https://api.darksky.net/forecast/${DARKSKY_TOKEN}/41.8781,-87.6298`,
-    function(err, response, body) {
-      if (err) {
-        console.log(errorMsg);
-      } else {
-        try {
-          let con = JSON.parse(body);
-          resp =
-            "Today in Chicago you can expect a high of " +
-            con.daily.data[0].temperatureMax +
-            " and a low of " +
-            con.daily.data[0].temperatureMin +
-            ".\n";
-          resp +=
-            "Weather summary for the day: " + con.daily.data[0].summary + "\n";
-          bot.telegram.sendMessage(GROUP_ID, resp);
-        } catch (error) {
-          console.log(error);
-          return;
-        }
-      }
-    }
-  );
 
   mainCTX = ctx;
   // Load client secrets from a local file.
