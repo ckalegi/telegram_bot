@@ -270,7 +270,8 @@ function dailyMessage() {
   });  
 }
 
-var s = schedule.scheduleJob("0 11 * * *", () => {
+var s = schedule.scheduleJob("25 16 * * *", () => {
+  console.log("Tada");
   dailyMessage();
 });
 
