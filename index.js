@@ -120,7 +120,7 @@ function sayNextGroupRide(auth) {
     const rows = res.data.values;
 
     let rowsAfterToday = [];
-    console.log(rows)
+    // console.log(rows)
     // 9 is date
 
     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -131,6 +131,8 @@ function sayNextGroupRide(auth) {
 
     var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
 
+    console.log(firstDate)
+    console.log(secondDate)
     console.log(diffDays)
 
     if (rows.length > 0) {
@@ -140,7 +142,6 @@ function sayNextGroupRide(auth) {
         }
       }
 
-      console.log(rowsAfterToday);
 
       if(rowsAfterToday.length > 0) {
           let minRowIndex = 0;
