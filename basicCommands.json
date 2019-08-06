@@ -86,7 +86,7 @@
   },
   {
     "commands": ["helpful_links", "links", "link", "helpfullinks"],
-    "response": "Charging Map: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing\nBoosted Board Riders Chicago: https://www.facebook.com/groups/BoostedCHI\nChicago E-Skate: https://www.facebook.com/groups/chicagoeskate/\nAnnouncement Telegram: https://t.me/joinchat/AAAAAEwbHWf-hVIT53a75Q \n Telegram Invite Link: https://t.me/joinchat/GtOvohDOaknaq_0JfboLJg"
+    "response": "Charging Map: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing\nBoosted Board Riders Chicago: https://www.facebook.com/groups/BoostedCHI\nChicago E-Skate: https://www.facebook.com/groups/chicagoeskate/\nAnnouncement Telegram: https://t.me/joinchat/AAAAAEwbHWf-hVIT53a75Q \n Telegram Invite Link: https://t.me/joinchat/GtOvohDOaknaq_0JfboLJg\n Strava Group: https://www.strava.com/clubs/boostedchi"
   },
   {
     "commands": ["helmet", "helmets", "helmet_recommendations", "brain_bucket"],
@@ -94,7 +94,7 @@
   },
   {
     "commands": ["belts", "belt"],
-    "response": "The belts we use are 225-3M-15\nThey can be purchased from: \nhttps://shop.boostedboards.com/products/2nd-gen-belt-kit\nhttps://www.royalsupply.com/store/pc/Gates-225-3M-15-PowerGrip-HTD-Belt-9293-0395-p18067.htm\nhttps://www.amazon.com/JVgear-Boosted-Board-Belts-Stealth/dp/B076HKPKLF/ref=sr_1_3?ie=UTF8&qid=1530303696&sr=8-3&keywords=boosted+board+belts"
+    "response": "Boosted Board belts are 225-3M-15\nThey can be purchased from: \nhttps://shop.boostedboards.com/products/2nd-gen-belt-kit\nhttps://www.royalsupply.com/store/pc/Gates-225-3M-15-PowerGrip-HTD-Belt-9293-0395-p18067.htm\nhttps://www.amazon.com/JVgear-Boosted-Board-Belts-Stealth/dp/B076HKPKLF/ref=sr_1_3?ie=UTF8&qid=1530303696&sr=8-3&keywords=boosted+board+belts"
   },
   {
     "commands": ["nosedive"],
@@ -107,5 +107,9 @@
   {
     "commands":["rule", "rules", "guideline", "guidelines", "law", "laws"],
     "response": "For more information on the rules, visit: http://bit.ly/CHIesk8Rules\n\n1. Wear a helmet.\n2. Seriously, wear a helmet.\n3. Keep a safe following distance.\n4. Stagger yourselves while riding.\n5. Wear clothing that wont fly off or get caught in wheels.\n6. Don't blind people with your flashlight.\n7. Watch where you shine your flashlight.\n8. Ride responsibly.\n9. Be a team player.\n10. Communicate.\n11. Come prepared.\n12. Obey traffic signals.\n13. Excersise caution.\n14. Ride Defensively.\n15. Avoide Road Rage.\n16. Keep some form of emergency contact info on your person.\n17. Do not ride drunk."
+  },
+  {
+    "commands":["strava"],
+    "response":"Track your miles and share your routes! Join Boosted Chicago on Strava by visiting:\nhttps://www.strava.com/clubs/boostedchi"
   }
 ]
